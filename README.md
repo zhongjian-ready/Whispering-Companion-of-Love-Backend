@@ -30,17 +30,3 @@ Configuration is managed via `config.yaml`. You can also use environment variabl
    ```bash
    go run main.go
    ```
-
-## Deployment (Docker)
-
-Build the Docker image:
-
-```bash
-docker build -t miniapp-backend .
-```
-
-Run the container:
-
-```bash
-docker run -p 8080:8080 miniapp-backend
-```
