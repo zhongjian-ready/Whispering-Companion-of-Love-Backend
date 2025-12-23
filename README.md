@@ -6,7 +6,7 @@ This is a backend service for a WeChat Mini Program, written in Go.
 
 - **Language**: Go
 - **Web Framework**: Gin
-- **Database**: PostgreSQL (using GORM)
+- **Database**: MySQL (using GORM)
 - **Cache**: Redis (using go-redis)
 - **Configuration**: Viper
 
@@ -24,7 +24,7 @@ Configuration is managed via `config.yaml`. You can also use environment variabl
 
 ## Running Locally
 
-1. Ensure PostgreSQL and Redis are running.
+1. Ensure MySQL and Redis are running.
 2. Update `config.yaml` with your database and redis credentials.
 3. Run the server:
    ```bash

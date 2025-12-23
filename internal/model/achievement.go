@@ -22,7 +22,7 @@ type UserAchievement struct {
 	UserID        int64       `gorm:"index;uniqueIndex:idx_user_achievement" json:"user_id"`
 	AchievementID int64       `gorm:"index;uniqueIndex:idx_user_achievement" json:"achievement_id"`
 	Achievement   Achievement `gorm:"foreignKey:AchievementID" json:"achievement"`
-	UnlockedAt    time.Time   `gorm:"default:CURRENT_TIMESTAMP" json:"unlocked_at"`
+	UnlockedAt    time.Time   `gorm:"type:datetime;default:CURRENT_TIMESTAMP" json:"unlocked_at"`
 }
 
 func (UserAchievement) TableName() string {

@@ -20,7 +20,7 @@ func main() {
 	}
 
 	// 2. Initialize Database
-	db, err := database.NewPostgresDB(cfg.Database)
+	db, err := database.NewMySQLDB(cfg.Database)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}

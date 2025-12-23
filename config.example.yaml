@@ -4,11 +4,10 @@ server:
 
 database:
   host: localhost
-  port: 5432
-  user: postgres
-  password: 'your_password'
+  port: 3306
+  user: app_user@localhost
+  password: 'StrongPassword123'
   dbname: miniapp
-  sslmode: disable
   timezone: Asia/Shanghai
 
 redis:
