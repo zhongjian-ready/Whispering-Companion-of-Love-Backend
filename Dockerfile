@@ -33,8 +33,8 @@ RUN apk --no-cache add ca-certificates
 COPY --from=builder /app/main .
 COPY --from=builder /app/config.example.yaml ./config.yaml
 
-# Expose port 8080 to the outside world
-EXPOSE 8080
+# Expose port 80 to the outside world
+EXPOSE 80
 
 # Command to run the executable
 CMD ["./main"]
