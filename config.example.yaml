@@ -6,6 +6,6 @@ database:
   host: 10.50.104.140
   port: 3306
   user: root
-  password: 'syU7m3Bf'
+  password: '888888'
   dbname: miniapp
   timezone: Asia/Shanghai
