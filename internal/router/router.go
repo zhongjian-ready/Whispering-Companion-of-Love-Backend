@@ -6,11 +6,10 @@ import (
 	"miniapp-backend/internal/handler"
 
 	"github.com/gin-gonic/gin"
-	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
 
-func SetupRouter(cfg *config.Config, db *gorm.DB, rdb *redis.Client, userHandler *handler.UserHandler, intakeHandler *handler.IntakeHandler, achievementHandler *handler.AchievementHandler) *gin.Engine {
+func SetupRouter(cfg *config.Config, db *gorm.DB, userHandler *handler.UserHandler, intakeHandler *handler.IntakeHandler, achievementHandler *handler.AchievementHandler) *gin.Engine {
 	if cfg.Server.Mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
 	}

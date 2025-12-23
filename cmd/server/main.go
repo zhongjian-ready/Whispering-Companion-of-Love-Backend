@@ -8,8 +8,6 @@ import (
 	"miniapp-backend/internal/model"
 	"miniapp-backend/internal/repository"
 	"miniapp-backend/internal/router"
-
-	// "miniapp-backend/pkg/cache"
 	"miniapp-backend/pkg/database"
 )
 
@@ -21,6 +19,7 @@ func main() {
 	}
 
 	// 2. Initialize Database
+	log.Printf("Connecting to database at %s:%s...", cfg.Database.Host, cfg.Database.Port)
 	db, err := database.NewMySQLDB(cfg.Database)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
@@ -35,13 +34,7 @@ func main() {
 		log.Fatalf("Failed to migrate database: %v", err)
 	}
 
-	// 3. Initialize Redis
-	// rdb, err := cache.NewRedisClient(cfg.Redis)
-	// if err != nil {
-	// 	log.Fatalf("Failed to connect to redis: %v", err)
-	// }
-
-	// 4. Initialize Repository & Handler
+	// 3. Initialize Repository & Handler
 	userRepo := repository.NewUserRepository(db)
 	intakeRepo := repository.NewIntakeRepository(db)
 	achievementRepo := repository.NewAchievementRepository(db)
@@ -50,10 +43,10 @@ func main() {
 	intakeHandler := handler.NewIntakeHandler(intakeRepo, userRepo)
 	achievementHandler := handler.NewAchievementHandler(achievementRepo)
 
-	// 5. Setup Router
-	r := router.SetupRouter(cfg, db, nil, userHandler, intakeHandler, achievementHandler)
+	// 4. Setup Router
+	r := router.SetupRouter(cfg, db, userHandler, intakeHandler, achievementHandler)
 
-	// 6. Run Server
+	// 5. Run Server
 	addr := fmt.Sprintf(":%s", cfg.Server.Port)
 	log.Printf("Server starting on %s", addr)
 	if err := r.Run(addr); err != nil {

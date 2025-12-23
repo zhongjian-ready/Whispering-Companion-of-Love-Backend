@@ -9,8 +9,3 @@ database:
   password: 'syU7m3Bf'
   dbname: miniapp
   timezone: Asia/Shanghai
-
-redis:
-  addr: 127.0.0.1:6379
-  password: ''
-  db: 0
