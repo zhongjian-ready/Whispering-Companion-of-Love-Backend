@@ -12,7 +12,7 @@ This is a backend service for a WeChat Mini Program, written in Go.
 
 ## Project Structure
 
-- `cmd/server`: Entry point of the application.
+- `main.go`: Entry point of the application.
 - `internal/config`: Configuration loading logic.
 - `internal/router`: HTTP router setup.
 - `pkg/database`: Database connection setup.
@@ -28,7 +28,7 @@ Configuration is managed via `config.yaml`. You can also use environment variabl
 2. Update `config.yaml` with your database and redis credentials.
 3. Run the server:
    ```bash
-   go run cmd/server/main.go
+   go run main.go
    ```
 
 ## Deployment (Docker)

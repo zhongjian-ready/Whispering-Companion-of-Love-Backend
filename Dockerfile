@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.23-alpine AS builder
+FROM golang:1.25-alpine AS builder
 
 WORKDIR /app
 
@@ -10,13 +10,14 @@ WORKDIR /app
 # RUN apk add --no-cache git make gcc musl-dev
 
 COPY go.mod go.sum ./
+ENV GOPROXY=https://goproxy.cn,direct
 RUN go mod download
 
 COPY . .
 
 # Build the application
 # CGO_ENABLED=0 creates a statically linked binary
-RUN CGO_ENABLED=0 GOOS=linux go build -o server cmd/server/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o server main.go
 
 # Run stage
 FROM alpine:latest
