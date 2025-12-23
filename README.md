@@ -30,3 +30,7 @@ Configuration is managed via `config.yaml`. You can also use environment variabl
    ```bash
    go run main.go
    ```
+
+## Dockerfile 最佳实践
+
+请参考[如何提高项目构建效率](https://developers.weixin.qq.com/miniprogram/dev/wxcloudrun/src/scene/build/speed.html)
