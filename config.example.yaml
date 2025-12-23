@@ -3,10 +3,10 @@ server:
   mode: debug # debug, release, test
 
 database:
-  host: localhost
+  host: 10.50.104.140
   port: 3306
-  user: app_user@localhost
-  password: 'StrongPassword123'
+  user: root
+  password: 'syU7m3Bf'
   dbname: miniapp
   timezone: Asia/Shanghai
 
