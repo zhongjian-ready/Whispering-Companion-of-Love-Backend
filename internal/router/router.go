@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"miniapp-backend/internal/config"
 	"miniapp-backend/internal/handler"
 
@@ -15,6 +16,20 @@ func SetupRouter(cfg *config.Config, db *gorm.DB, rdb *redis.Client, userHandler
 	}
 
 	r := gin.Default()
+
+	// Middleware to log WeChat Call ID
+	r.Use(func(c *gin.Context) {
+		callID := c.GetHeader("x-wx-call-id")
+		if callID == "" {
+			callID = c.GetHeader("x-request-id")
+		}
+		if callID != "" {
+			fmt.Printf("[WeChat] CallID: %s | Path: %s | Method: %s\n", callID, c.Request.URL.Path, c.Request.Method)
+			// Set it to context if handlers need it
+			c.Set("callID", callID)
+		}
+		c.Next()
+	})
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
