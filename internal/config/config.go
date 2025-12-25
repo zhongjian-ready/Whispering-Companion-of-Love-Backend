@@ -40,6 +40,11 @@ func LoadConfig() (*Config, error) {
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv()
 
+	// Manually bind specific environment variables
+	_ = viper.BindEnv("wechat.appid", "APP_ID")
+	_ = viper.BindEnv("wechat.appsecret", "APP_SECRET")
+	_ = viper.BindEnv("wechat.template_id", "TEMPLATE_ID")
+
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, err
 	}
