@@ -31,7 +31,7 @@ RUN apk --no-cache add ca-certificates
 
 # Copy the Pre-built binary file from the previous stage
 COPY --from=builder /app/main .
-COPY --from=builder /app/config.yaml ./config.yaml
+COPY --from=builder /app/config.example.yaml ./config.yaml
 
 # Expose port 80 to the outside world
 EXPOSE 80
