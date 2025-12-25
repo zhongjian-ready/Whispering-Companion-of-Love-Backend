@@ -38,8 +38,12 @@ func SetupRouter(cfg *config.Config, db *gorm.DB, userHandler *handler.UserHandl
 
 	// User routes
 	r.GET("/users", userHandler.GetUsers)
+	r.POST("/user/login", userHandler.Login)
+	r.POST("/user/info", userHandler.UpdateInfo)
+	r.GET("/user/info", userHandler.GetInfo)
 	r.GET("/settings", userHandler.GetSettings)
 	r.PUT("/settings", userHandler.UpdateSettings)
+	r.POST("/settings", userHandler.UpdateSettings)
 
 	// Intake routes
 	r.POST("/intake", intakeHandler.AddIntake)

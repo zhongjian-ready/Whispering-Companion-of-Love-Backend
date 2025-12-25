@@ -10,7 +10,7 @@ type User struct {
 	ID           int64          `gorm:"primaryKey;autoIncrement;column:id" json:"user_id"`
 	Username     *string        `gorm:"type:varchar(50);unique" json:"username,omitempty"`
 	Email        *string        `gorm:"type:varchar(100);unique;index:idx_users_email" json:"email,omitempty"`
-	PasswordHash string         `gorm:"type:varchar(255);not null" json:"-"`
+	PasswordHash string         `gorm:"type:varchar(255)" json:"-"`
 	Salt         string         `gorm:"type:varchar(50)" json:"-"`
 	OpenID       *string        `gorm:"column:openid;type:varchar(100);unique;index:idx_users_openid" json:"openid,omitempty"`
 	UnionID      *string        `gorm:"column:unionid;type:varchar(100)" json:"unionid,omitempty"`

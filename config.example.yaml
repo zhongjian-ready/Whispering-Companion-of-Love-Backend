@@ -9,3 +9,7 @@ database:
   password: '888888'
   dbname: miniapp
   timezone: Asia/Shanghai
+
+wechat:
+  appid: 'YOUR_APP_ID'
+  appsecret: 'YOUR_APP_SECRET'

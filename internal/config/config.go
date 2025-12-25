@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Server   ServerConfig   `mapstructure:"server"`
 	Database DatabaseConfig `mapstructure:"database"`
+	WeChat   WeChatConfig   `mapstructure:"wechat"`
 }
 
 type ServerConfig struct {
@@ -23,6 +24,11 @@ type DatabaseConfig struct {
 	Password string `mapstructure:"password"`
 	DBName   string `mapstructure:"dbname"`
 	TimeZone string `mapstructure:"timezone"`
+}
+
+type WeChatConfig struct {
+	AppID     string `mapstructure:"appid"`
+	AppSecret string `mapstructure:"appsecret"`
 }
 
 func LoadConfig() (*Config, error) {

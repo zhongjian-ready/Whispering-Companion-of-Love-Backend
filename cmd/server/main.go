@@ -9,6 +9,7 @@ import (
 	"miniapp-backend/internal/repository"
 	"miniapp-backend/internal/router"
 	"miniapp-backend/pkg/database"
+	"miniapp-backend/pkg/wechat"
 )
 
 func main() {
@@ -17,6 +18,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
+
 
 	// 2. Initialize Database
 	log.Printf("Connecting to database at %s:%s...", cfg.Database.Host, cfg.Database.Port)
@@ -34,19 +36,22 @@ func main() {
 		log.Fatalf("Failed to migrate database: %v", err)
 	}
 
-	// 3. Initialize Repository & Handler
+	// 3. Initialize Services
+	wechatSvc := wechat.NewWeChatService(cfg.WeChat)
+
+	// 4. Initialize Repository & Handler
 	userRepo := repository.NewUserRepository(db)
 	intakeRepo := repository.NewIntakeRepository(db)
 	achievementRepo := repository.NewAchievementRepository(db)
 
-	userHandler := handler.NewUserHandler(userRepo)
+	userHandler := handler.NewUserHandler(userRepo, wechatSvc)
 	intakeHandler := handler.NewIntakeHandler(intakeRepo, userRepo)
 	achievementHandler := handler.NewAchievementHandler(achievementRepo)
 
-	// 4. Setup Router
+	// 5. Setup Router
 	r := router.SetupRouter(cfg, db, userHandler, intakeHandler, achievementHandler)
 
-	// 5. Run Server
+	// 6. Run Server
 	addr := fmt.Sprintf(":%s", cfg.Server.Port)
 	log.Printf("Server starting on %s", addr)
 	if err := r.Run(addr); err != nil {
