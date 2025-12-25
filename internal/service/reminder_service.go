@@ -26,10 +26,10 @@ func NewReminderService(userRepo *repository.UserRepository, intakeRepo *reposit
 }
 
 func (s *ReminderService) Start() {
-	log.Println("Reminder service started. Checking every 1 minute.")
+	log.Println("Reminder service started. Checking every 60 minute.")
 
 	// Start a ticker immediately
-	ticker := time.NewTicker(1 * time.Minute)
+	ticker := time.NewTicker(60 * time.Minute)
 	go func() {
 		for range ticker.C {
 			s.SendReminders()
