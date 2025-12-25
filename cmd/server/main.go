@@ -8,6 +8,7 @@ import (
 	"miniapp-backend/internal/model"
 	"miniapp-backend/internal/repository"
 	"miniapp-backend/internal/router"
+	"miniapp-backend/internal/service"
 	"miniapp-backend/pkg/database"
 	"miniapp-backend/pkg/wechat"
 )
@@ -47,6 +48,10 @@ func main() {
 	userHandler := handler.NewUserHandler(userRepo, wechatSvc)
 	intakeHandler := handler.NewIntakeHandler(intakeRepo, userRepo)
 	achievementHandler := handler.NewAchievementHandler(achievementRepo)
+
+	// Initialize Reminder Service
+	reminderSvc := service.NewReminderService(userRepo, intakeRepo, wechatSvc, cfg)
+	reminderSvc.Start()
 
 	// 5. Setup Router
 	r := router.SetupRouter(cfg, db, userHandler, intakeHandler, achievementHandler)

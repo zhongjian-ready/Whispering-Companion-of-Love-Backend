@@ -27,8 +27,9 @@ type DatabaseConfig struct {
 }
 
 type WeChatConfig struct {
-	AppID     string `mapstructure:"appid"`
-	AppSecret string `mapstructure:"appsecret"`
+	AppID      string `mapstructure:"appid"`
+	AppSecret  string `mapstructure:"appsecret"`
+	TemplateID string `mapstructure:"template_id"`
 }
 
 func LoadConfig() (*Config, error) {

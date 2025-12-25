@@ -57,3 +57,9 @@ func (r *UserRepository) Create(user *model.User) error {
 func (r *UserRepository) Update(user *model.User) error {
 	return r.db.Save(user).Error
 }
+
+func (r *UserRepository) FindUsersWithRemindersEnabled() ([]model.User, error) {
+	var users []model.User
+	err := r.db.Where("reminder_enabled = ?", true).Find(&users).Error
+	return users, err
+}
