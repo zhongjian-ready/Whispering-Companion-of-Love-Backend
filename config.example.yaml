@@ -1,9 +1,9 @@
 server:
-  port: 8080
+  port: 80
   mode: debug # debug, release, test
 
 database:
-  host: localhost
+  host: 10.50.104.140
   port: 3306
   user: root
   password: '' # 替换为你本地 MySQL 的密码 syU7m3Bf
