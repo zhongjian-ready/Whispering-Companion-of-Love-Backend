@@ -1,15 +1,21 @@
 server:
-  port: 80
+  port: 8080
   mode: debug # debug, release, test
 
 database:
-  host: 10.50.104.140
+  host: localhost
   port: 3306
   user: root
-  password: '888888'
+  password: '' # 替换为你本地 MySQL 的密码 syU7m3Bf
   dbname: miniapp
   timezone: Asia/Shanghai
 
 wechat:
-  appid: 'YOUR_APP_ID'
-  appsecret: 'YOUR_APP_SECRET'
+  appid: ''
+  appsecret: ''
+  template_id: ''
+
+redis:
+  addr: 127.0.0.1:6379
+  password: ''
+  db: 0
