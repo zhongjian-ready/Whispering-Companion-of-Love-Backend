@@ -141,3 +141,53 @@ func (s *WeChatService) Code2Session(code string) (*Code2SessionResponse, error)
 
 	return &result, nil
 }
+
+type PhoneNumberResponse struct {
+	ErrCode   int       `json:"errcode"`
+	ErrMsg    string    `json:"errmsg"`
+	PhoneInfo PhoneInfo `json:"phone_info"`
+}
+
+type PhoneInfo struct {
+	PhoneNumber     string `json:"phoneNumber"`
+	PurePhoneNumber string `json:"purePhoneNumber"`
+	CountryCode     string `json:"countryCode"`
+	Watermark       struct {
+		Timestamp int64  `json:"timestamp"`
+		AppID     string `json:"appid"`
+	} `json:"watermark"`
+}
+
+func (s *WeChatService) GetPhoneNumber(code string) (*PhoneInfo, error) {
+	token, err := s.GetAccessToken()
+	if err != nil {
+		return nil, err
+	}
+
+	url := fmt.Sprintf("https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token=%s", token)
+
+	reqBody := map[string]string{
+		"code": code,
+	}
+	body, err := json.Marshal(reqBody)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(body))
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var result PhoneNumberResponse
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	if result.ErrCode != 0 {
+		return nil, fmt.Errorf("wechat api error: %d %s", result.ErrCode, result.ErrMsg)
+	}
+
+	return &result.PhoneInfo, nil
+}

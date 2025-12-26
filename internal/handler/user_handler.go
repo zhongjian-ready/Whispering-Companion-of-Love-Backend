@@ -166,6 +166,7 @@ type UpdateInfoRequest struct {
 	UserID    int64  `json:"user_id" binding:"required"`
 	Nickname  string `json:"nickname"`
 	AvatarURL string `json:"avatar_url"`
+	PhoneCode string `json:"phone_code"`
 }
 
 func (h *UserHandler) UpdateInfo(c *gin.Context) {
@@ -183,12 +184,25 @@ func (h *UserHandler) UpdateInfo(c *gin.Context) {
 		updates["avatar_url"] = req.AvatarURL
 	}
 
+	if req.PhoneCode != "" {
+		phoneInfo, err := h.wechatSvc.GetPhoneNumber(req.PhoneCode)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get phone number: " + err.Error()})
+			return
+		}
+		updates["phone"] = phoneInfo.PurePhoneNumber
+	}
+
 	if err := h.repo.UpdateSettings(req.UserID, updates); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user info"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "User info updated"})
+	response := gin.H{"message": "User info updated"}
+	if val, ok := updates["phone"]; ok {
+		response["phone"] = val
+	}
+	c.JSON(http.StatusOK, response)
 }
 
 func (h *UserHandler) GetInfo(c *gin.Context) {
@@ -215,5 +229,6 @@ func (h *UserHandler) GetInfo(c *gin.Context) {
 		"nickname":   user.Nickname,
 		"avatar_url": user.AvatarURL,
 		"openid":     user.OpenID,
+		"phone":      user.Phone,
 	})
 }
