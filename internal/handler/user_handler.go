@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"miniapp-backend/internal/model"
 	"miniapp-backend/internal/repository"
 	"miniapp-backend/pkg/wechat"
@@ -163,10 +164,11 @@ func (h *UserHandler) Login(c *gin.Context) {
 }
 
 type UpdateInfoRequest struct {
-	UserID    int64  `json:"user_id" binding:"required"`
-	Nickname  string `json:"nickname"`
-	AvatarURL string `json:"avatar_url"`
-	PhoneCode string `json:"phone_code"`
+	UserID      int64  `json:"user_id" binding:"required"`
+	Nickname    string `json:"nickname"`
+	AvatarURL   string `json:"avatar_url"`
+	PhoneCode   string `json:"phone_code"`
+	StatusPhoto string `json:"status_photo"`
 }
 
 func (h *UserHandler) UpdateInfo(c *gin.Context) {
@@ -183,6 +185,12 @@ func (h *UserHandler) UpdateInfo(c *gin.Context) {
 	if req.AvatarURL != "" {
 		updates["avatar_url"] = req.AvatarURL
 	}
+	if req.StatusPhoto != "" {
+		updates["status_photo"] = req.StatusPhoto
+	}
+
+	// Debug log
+	fmt.Printf("UpdateInfo: UserID=%d, Updates=%v\n", req.UserID, updates)
 
 	if req.PhoneCode != "" {
 		phoneInfo, err := h.wechatSvc.GetPhoneNumber(req.PhoneCode)
@@ -191,6 +199,11 @@ func (h *UserHandler) UpdateInfo(c *gin.Context) {
 			return
 		}
 		updates["phone"] = phoneInfo.PurePhoneNumber
+	}
+
+	if len(updates) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "No fields to update"})
+		return
 	}
 
 	if err := h.repo.UpdateSettings(req.UserID, updates); err != nil {
@@ -225,10 +238,11 @@ func (h *UserHandler) GetInfo(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"user_id":    user.ID,
-		"nickname":   user.Nickname,
-		"avatar_url": user.AvatarURL,
-		"openid":     user.OpenID,
-		"phone":      user.Phone,
+		"user_id":      user.ID,
+		"nickname":     user.Nickname,
+		"avatar_url":   user.AvatarURL,
+		"openid":       user.OpenID,
+		"phone":        user.Phone,
+		"status_photo": user.StatusPhoto,
 	})
 }

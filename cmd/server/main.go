@@ -14,6 +14,8 @@ import (
 )
 
 func main() {
+	log.Println("Starting server v1.1 with StatusPhoto support...")
+
 	// 1. Load Configuration
 	cfg, err := config.LoadConfig()
 	if err != nil {
