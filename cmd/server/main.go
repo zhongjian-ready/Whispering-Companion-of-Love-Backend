@@ -35,6 +35,7 @@ func main() {
 		&model.IntakeRecord{},
 		&model.Achievement{},
 		&model.UserAchievement{},
+		&model.Order{},
 	); err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)
 	}
@@ -46,17 +47,21 @@ func main() {
 	userRepo := repository.NewUserRepository(db)
 	intakeRepo := repository.NewIntakeRepository(db)
 	achievementRepo := repository.NewAchievementRepository(db)
+	orderRepo := repository.NewOrderRepository(db)
+
+	paymentSvc := service.NewPaymentService(cfg.WeChat, orderRepo, userRepo)
 
 	userHandler := handler.NewUserHandler(userRepo, wechatSvc)
 	intakeHandler := handler.NewIntakeHandler(intakeRepo, userRepo)
 	achievementHandler := handler.NewAchievementHandler(achievementRepo)
+	paymentHandler := handler.NewPaymentHandler(paymentSvc)
 
 	// Initialize Reminder Service
 	reminderSvc := service.NewReminderService(userRepo, intakeRepo, wechatSvc, cfg)
 	reminderSvc.Start()
 
 	// 5. Setup Router
-	r := router.SetupRouter(cfg, db, userHandler, intakeHandler, achievementHandler)
+	r := router.SetupRouter(cfg, db, userHandler, intakeHandler, achievementHandler, paymentHandler)
 
 	// 6. Run Server
 	addr := fmt.Sprintf(":%s", cfg.Server.Port)

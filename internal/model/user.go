@@ -19,6 +19,8 @@ type User struct {
 	AvatarURL    string         `gorm:"column:avatar_url;type:varchar(500)" json:"avatar_url"`
 	StatusPhoto  *string        `gorm:"column:status_photo;type:varchar(500)" json:"status_photo,omitempty"`
 	Phone        *string        `gorm:"type:varchar(20);index:idx_users_phone" json:"phone,omitempty"`
+	IsVIP        bool           `gorm:"default:false;column:is_vip" json:"is_vip"`
+	VIPExpireAt  *time.Time     `gorm:"column:vip_expire_at" json:"vip_expire_at,omitempty"`
 	Gender       int8           `gorm:"type:smallint;default:0" json:"gender"`
 	IsActive     bool           `gorm:"default:true;index:idx_users_is_active" json:"is_active"`
 	IsAdmin      bool           `gorm:"default:false" json:"is_admin"`

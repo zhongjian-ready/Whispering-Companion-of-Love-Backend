@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetupRouter(cfg *config.Config, db *gorm.DB, userHandler *handler.UserHandler, intakeHandler *handler.IntakeHandler, achievementHandler *handler.AchievementHandler) *gin.Engine {
+func SetupRouter(cfg *config.Config, db *gorm.DB, userHandler *handler.UserHandler, intakeHandler *handler.IntakeHandler, achievementHandler *handler.AchievementHandler, paymentHandler *handler.PaymentHandler) *gin.Engine {
 	if cfg.Server.Mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -53,6 +53,11 @@ func SetupRouter(cfg *config.Config, db *gorm.DB, userHandler *handler.UserHandl
 
 	// Achievement routes
 	r.GET("/achievements", achievementHandler.GetAchievements)
+
+	// Payment routes
+	r.POST("/payment/create", paymentHandler.CreateOrder)
+	r.GET("/payment/subscription", paymentHandler.GetSubscription)
+	r.POST("/payment/notify", paymentHandler.Notify) // Callback URL
 
 	return r
 }
